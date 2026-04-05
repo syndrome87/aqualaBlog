@@ -216,7 +216,25 @@ export const seoConfig = {
 };
 
 const BUILT_IN_COVERS = Array.from({ length: 21 }, (_, i) => `/img/cover/${i + 1}.webp`);
-export const defaultCoverList = yamlConfig?.defaultCoverList?.length ? yamlConfig.defaultCoverList : BUILT_IN_COVERS;
+
+const DISCOVERED_COVERS = Object.keys(
+  import.meta.glob('/public/img/cover/*.{webp,png,jpg,jpeg,avif,gif,svg}', {
+    eager: false,
+  }),
+)
+  .map((file) => file.replace(/^\/public/, ''))
+  .sort((a, b) =>
+    a.localeCompare(b, undefined, {
+      numeric: true,
+      sensitivity: 'base',
+    }),
+  );
+
+export const defaultCoverList = yamlConfig?.defaultCoverList?.length
+  ? yamlConfig.defaultCoverList
+  : DISCOVERED_COVERS.length
+    ? DISCOVERED_COVERS
+    : BUILT_IN_COVERS;
 
 // Analytics config types
 type AnalyticsConfig = {
