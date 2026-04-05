@@ -8,8 +8,8 @@ tags:
   - 生活
 categories:
   - 随笔
+updated: 2026-04-03 11:13:41
 ---
-
 Hello, World! This is my first essay.
 
 ## About This Post
@@ -17,16 +17,20 @@ Hello, World! This is my first essay.
 This post intentionally does not set a `description` field, to test the following features:
 
 1. **Auto Description Extraction** - The system automatically extracts the first 150 characters as the description
+
 2. **AI Summary** - If `pnpm generate:summaries` has been run, an AI-generated summary will be used
 
 ## The Essay Category
 
 The essay category is great for:
 
-- Life reflections
-- Year-end reviews
-- Random thoughts
-- Personal growth
+* Life reflections
+
+* Year-end reviews
+
+* Random thoughts
+
+* Personal growth
 
 ## Writing Tips
 
