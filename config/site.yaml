@@ -14,7 +14,7 @@ site:
   title: 小妖@qua's博客 # 网站名称
   alternate: AquaLa's blog # 网站英文名称 用于页脚、Logo、@ handle 等
   subtitle: Love & Code # 网站副标题
-  name: AquaLyrica # 作者名称 - 请修改为你的名字
+  name: AquaLa # 作者名称 - 请修改为你的名字
   description: INFP/前端/音游/im@s # 网站描述
   avatar: /img/avatar.webp # 网站头像
   showLogo: true # 是否显示 Logo
