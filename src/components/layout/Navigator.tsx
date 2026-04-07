@@ -6,11 +6,12 @@
  */
 
 import ThemeToggle from '@components/theme/ThemeToggle';
+import type { Router } from '@constants/router';
 import { RESERVED_ROUTES } from '@constants/router';
 import { configuredSeriesSlugs, enabledSeriesSlugs, routers } from '@constants/site-config';
 import { useIsTablet } from '@hooks/useMediaQuery';
 import { useScrollTrigger } from '@hooks/useScrollTrigger';
-import { Icon } from '@iconify/react';
+import { Icon, iconLoaded, loadIcons } from '@iconify/react';
 import { cn, filterNavItems } from '@lib/utils';
 import { memo, useEffect, useRef } from 'react';
 import { defaultLocale, localizedPath, resolveNavName, stripLocaleFromPath } from '@/i18n';
@@ -25,6 +26,23 @@ interface NavigatorProps {
 
 // Pre-filter navigation items at module load (config is static)
 const filteredRouters = filterNavItems(routers, configuredSeriesSlugs, enabledSeriesSlugs, RESERVED_ROUTES);
+
+function collectNavIcons(items: Router[]): string[] {
+  const icons: string[] = [];
+
+  for (const item of items) {
+    if (item.icon) {
+      icons.push(item.icon);
+    }
+    if (item.children?.length) {
+      icons.push(...collectNavIcons(item.children));
+    }
+  }
+
+  return icons;
+}
+
+const navIconsToPreload = Array.from(new Set(collectNavIcons(filteredRouters)));
 
 // Icon component for navigation items - uses @iconify/react for dynamic icons
 function NavIcon({ name }: { name: string }) {
@@ -74,6 +92,17 @@ const Navigator = memo(function Navigator({ currentPath, locale = defaultLocale 
   useEffect(() => {
     document.getElementById('site-header')?.classList.toggle('with-background', isBeyond);
   }, [isBeyond]);
+
+  // Preload navigation icons to reduce delayed icon rendering on first paint
+  useEffect(() => {
+    const pendingIcons = navIconsToPreload.filter((iconName) => !iconLoaded(iconName));
+    if (pendingIcons.length === 0) return;
+
+    const abortLoad = loadIcons(pendingIcons);
+    return () => {
+      abortLoad();
+    };
+  }, []);
 
   // Handle header visibility based on scroll
   useEffect(() => {
