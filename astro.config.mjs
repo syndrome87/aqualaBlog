@@ -1,42 +1,45 @@
-import fs from 'node:fs';
-import path from 'node:path';
-import react from '@astrojs/react';
-import sitemap from '@astrojs/sitemap';
-import yaml from '@rollup/plugin-yaml';
-import tailwindcss from '@tailwindcss/vite';
-import umami from '@yeskunall/astro-umami';
-import { defineConfig } from 'astro/config';
-import icon from 'astro-icon';
-import mermaid from 'astro-mermaid';
-import pagefind from 'astro-pagefind';
-import robotsTxt from 'astro-robots-txt';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypeKatex from 'rehype-katex';
-import rehypeSlug from 'rehype-slug';
-import remarkDirective from 'remark-directive';
-import remarkMath from 'remark-math';
-import Sonda from 'sonda/astro';
-import { loadEnv } from 'vite';
-import svgr from 'vite-plugin-svgr';
-import YAML from 'yaml';
-import { rehypeEncryptedBlock } from './src/lib/markdown/rehype-encrypted-block.ts';
-import { rehypeEncryptedPost } from './src/lib/markdown/rehype-encrypted-post.ts';
-import { rehypeImagePlaceholder } from './src/lib/markdown/rehype-image-placeholder.ts';
-import { rehypeShokaAttrs } from './src/lib/markdown/rehype-shoka-attrs.ts';
-import { remarkEncryptedDirective } from './src/lib/markdown/remark-encrypted-directive.ts';
-import { remarkLinkEmbed } from './src/lib/markdown/remark-link-embed.ts';
-import { remarkIns, remarkMark } from './src/lib/markdown/remark-shoka-effects.ts';
-import { remarkShokaPreprocess } from './src/lib/markdown/remark-shoka-preprocess.ts';
-import { remarkShokaRuby } from './src/lib/markdown/remark-shoka-ruby.ts';
-import { remarkShokaSpoiler } from './src/lib/markdown/remark-shoka-spoiler.ts';
-import { shokaMetaTransformer } from './src/lib/markdown/shiki-meta-transformer.ts';
-import { normalizeUrl } from './src/lib/utils.ts';
+import fs from "node:fs";
+import path from "node:path";
+import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
+import yaml from "@rollup/plugin-yaml";
+import tailwindcss from "@tailwindcss/vite";
+import umami from "@yeskunall/astro-umami";
+import { defineConfig } from "astro/config";
+import icon from "astro-icon";
+import mermaid from "astro-mermaid";
+import pagefind from "astro-pagefind";
+import robotsTxt from "astro-robots-txt";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeKatex from "rehype-katex";
+import rehypeSlug from "rehype-slug";
+import remarkDirective from "remark-directive";
+import remarkMath from "remark-math";
+import Sonda from "sonda/astro";
+import { loadEnv } from "vite";
+import svgr from "vite-plugin-svgr";
+import YAML from "yaml";
+import { rehypeEncryptedBlock } from "./src/lib/markdown/rehype-encrypted-block.ts";
+import { rehypeEncryptedPost } from "./src/lib/markdown/rehype-encrypted-post.ts";
+import { rehypeImagePlaceholder } from "./src/lib/markdown/rehype-image-placeholder.ts";
+import { rehypeShokaAttrs } from "./src/lib/markdown/rehype-shoka-attrs.ts";
+import { remarkEncryptedDirective } from "./src/lib/markdown/remark-encrypted-directive.ts";
+import { remarkLinkEmbed } from "./src/lib/markdown/remark-link-embed.ts";
+import {
+  remarkIns,
+  remarkMark,
+} from "./src/lib/markdown/remark-shoka-effects.ts";
+import { remarkShokaPreprocess } from "./src/lib/markdown/remark-shoka-preprocess.ts";
+import { remarkShokaRuby } from "./src/lib/markdown/remark-shoka-ruby.ts";
+import { remarkShokaSpoiler } from "./src/lib/markdown/remark-shoka-spoiler.ts";
+import { shokaMetaTransformer } from "./src/lib/markdown/shiki-meta-transformer.ts";
+import { normalizeUrl } from "./src/lib/utils.ts";
 
 // Load YAML config directly with Node.js (before Vite plugins are available)
 // This is only used in astro.config.mjs - other files use @rollup/plugin-yaml
 function loadConfigForAstro() {
-  const configPath = path.join(process.cwd(), 'config', 'site.yaml');
-  const content = fs.readFileSync(configPath, 'utf8');
+  const configPath = path.join(process.cwd(), "config", "site.yaml");
+  const content = fs.readFileSync(configPath, "utf8");
   return YAML.parse(content);
 }
 
@@ -44,8 +47,12 @@ const yamlConfig = loadConfigForAstro();
 
 // Bundle analysis mode: ANALYZE=true pnpm build
 // Use loadEnv to read .env file (astro.config.mjs runs before Vite loads .env)
-const { ANALYZE } = loadEnv(process.env.NODE_ENV || 'production', process.cwd(), '');
-const isAnalyze = ANALYZE === 'true';
+const { ANALYZE } = loadEnv(
+  process.env.NODE_ENV || "production",
+  process.cwd(),
+  "",
+);
+const isAnalyze = ANALYZE === "true";
 // Get Umami analytics config from YAML
 const umamiConfig = yamlConfig.analytics?.umami;
 const umamiEnabled = umamiConfig?.enabled ?? false;
@@ -58,8 +65,8 @@ const robotsConfig = yamlConfig.seo?.robots;
 
 // i18n configuration from YAML
 const i18nYaml = yamlConfig.i18n;
-const i18nDefaultLocale = i18nYaml?.defaultLocale ?? 'zh';
-const i18nLocales = (i18nYaml?.locales ?? [{ code: 'zh' }]).map((l) => l.code);
+const i18nDefaultLocale = i18nYaml?.defaultLocale ?? "zh";
+const i18nLocales = (i18nYaml?.locales ?? [{ code: "zh" }]).map((l) => l.code);
 const hasMultipleLocales = i18nLocales.length > 1;
 
 /**
@@ -68,24 +75,24 @@ const hasMultipleLocales = i18nLocales.length > 1;
  * This saves ~879KB from the bundle
  */
 function conditionalSnowfall() {
-  const VIRTUAL_ID = 'virtual:snowfall-canvas';
+  const VIRTUAL_ID = "virtual:snowfall-canvas";
   const RESOLVED_ID = `\0${VIRTUAL_ID}`;
   const christmas = yamlConfig.christmas || { enabled: false, features: {} };
   const isEnabled = christmas.enabled && christmas.features?.snowfall;
 
   return {
-    name: 'conditional-snowfall',
+    name: "conditional-snowfall",
     resolveId(id) {
       if (id === VIRTUAL_ID) return RESOLVED_ID;
       // Redirect the alias import to virtual module when disabled
-      if (!isEnabled && id === '@components/christmas/SnowfallCanvas') {
+      if (!isEnabled && id === "@components/christmas/SnowfallCanvas") {
         return RESOLVED_ID;
       }
     },
     load(id) {
       if (id === RESOLVED_ID) {
         // Return noop component when christmas is disabled
-        return 'export function SnowfallCanvas() { return null; }';
+        return "export function SnowfallCanvas() { return null; }";
       }
     },
   };
@@ -119,8 +126,10 @@ const remarkPlugins = [];
 // remarkMath must run BEFORE ruby/spoiler/effects so that $...$ content
 // is already parsed into inlineMath/math nodes and won't be touched by text-scanning plugins.
 if (contentConfig.enableMath !== false) remarkPlugins.push(remarkMath);
-if (contentConfig.enableShokaSpoiler !== false) remarkPlugins.push(remarkShokaSpoiler);
-if (contentConfig.enableShokaRuby !== false) remarkPlugins.push(remarkShokaRuby);
+if (contentConfig.enableShokaSpoiler !== false)
+  remarkPlugins.push(remarkShokaSpoiler);
+if (contentConfig.enableShokaRuby !== false)
+  remarkPlugins.push(remarkShokaRuby);
 if (contentConfig.enableShokaEffects !== false) {
   remarkPlugins.push(remarkIns, remarkMark);
 }
@@ -145,15 +154,16 @@ const rehypePlugins = [
   [
     rehypeAutolinkHeadings,
     {
-      behavior: 'append',
+      behavior: "append",
       properties: {
-        className: ['anchor-link'],
-        ariaLabel: 'Link to this section',
+        className: ["anchor-link"],
+        ariaLabel: "Link to this section",
       },
     },
   ],
 ];
-if (contentConfig.enableShokaAttrs !== false) rehypePlugins.push(rehypeShokaAttrs);
+if (contentConfig.enableShokaAttrs !== false)
+  rehypePlugins.push(rehypeShokaAttrs);
 rehypePlugins.push(rehypeImagePlaceholder);
 if (contentConfig.enableMath !== false) rehypePlugins.push(rehypeKatex);
 // Encrypted block/post MUST be last rehype plugins — encrypt fully-rendered children
@@ -164,11 +174,15 @@ if (contentConfig.enableEncryptedBlock) {
 
 // Shiki transformers
 const shikiTransformers = [];
-if (contentConfig.enableCodeMeta !== false) shikiTransformers.push(shokaMetaTransformer());
+if (contentConfig.enableCodeMeta !== false)
+  shikiTransformers.push(shokaMetaTransformer());
 
 // https://astro.build/config
 export default defineConfig({
   site: yamlConfig.site.url,
+  server: {
+    host: "127.0.0.1",
+  },
   compressHTML: true,
   markdown: {
     // Enable GitHub Flavored Markdown
@@ -176,13 +190,13 @@ export default defineConfig({
     remarkPlugins,
     rehypePlugins,
     syntaxHighlight: {
-      type: 'shiki',
-      excludeLangs: ['mermaid'],
+      type: "shiki",
+      excludeLangs: ["mermaid"],
     },
     shikiConfig: {
       themes: {
-        light: 'github-light',
-        dark: 'github-dark',
+        light: "github-light",
+        dark: "github-dark",
       },
       transformers: shikiTransformers,
     },
@@ -192,10 +206,10 @@ export default defineConfig({
     sitemap(),
     icon({
       include: {
-        gg: ['*'],
-        'fa6-regular': ['*'],
-        'fa6-solid': ['*'],
-        ri: ['*'],
+        gg: ["*"],
+        "fa6-regular": ["*"],
+        "fa6-solid": ["*"],
+        ri: ["*"],
       },
     }),
     // Umami analytics - configured via config/site.yaml
@@ -225,10 +239,10 @@ export default defineConfig({
     },
     plugins: [yaml(), conditionalSnowfall(), svgr(), tailwindcss()],
     ssr: {
-      noExternal: ['react-tweet'],
+      noExternal: ["react-tweet"],
     },
     optimizeDeps: {
-      include: ['@antv/infographic'],
+      include: ["@antv/infographic"],
     },
   },
   // Only enable Astro i18n routing when multiple locales are configured.
@@ -245,7 +259,7 @@ export default defineConfig({
   }),
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: 'viewport',
+    defaultStrategy: "viewport",
   },
-  trailingSlash: 'ignore',
+  trailingSlash: "ignore",
 });
