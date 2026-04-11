@@ -96,7 +96,7 @@ featuredCategories:
     description: 前端技术相关
   - link: tools # 对应 categoryMap 中 工具: tools
     label: 工具
-    image: /img/cover/11.webp
+    image: /img/cover/3.webp
     description: 工具使用、效率提升
 
 # =============================================================================
