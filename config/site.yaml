@@ -62,7 +62,7 @@ categoryMap:
   随笔: life
   笔记: note
   工具: tools
-  周刊: weekly
+  月刊: monthly
   # Secondary categories (for nested paths)
   前端: front-end
   # Add more as needed:
@@ -117,14 +117,13 @@ featuredCategories:
 #   links: 相关链接配置（可选）
 # -----------------------------------------------------------------------------
 featuredSeries:
-  - slug: weekly # URL 路径: /weekly
-    categoryName: 周刊 # 必须与 categoryMap 中的分类名匹配
-    label: 我的周刊 # 简短名称
-    fullName: 我的技术周刊 # 完整名称
+  - slug: monthly # URL 路径: /monthly
+    categoryName: 月刊 # 必须与 categoryMap 中的分类名匹配
+    label: 每月水刊 # 简短名称
+    fullName: aquala的每月水刊 # 完整名称
     description: | # 支持多行 Markdown
-      这是周刊/系列文章功能的示例配置。
-      你可以用它来发布定期更新的系列内容，如技术周刊、读书笔记系列等。
-      设置 enabled: false 可以关闭此功能。
+      每月水刊
+      这是一个每月更新的系列，记录我在一个月内遇到的有趣事物、想法和资源。内容涵盖技术、生活、兴趣等各个方面，旨在分享我的月度发现和感悟。
     cover: /img/weekly_header.webp # 系列页面头图
     enabled: true # 启用此系列
     icon: ri:newspaper-line # 导航图标
