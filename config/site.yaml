@@ -66,21 +66,22 @@ categoryMap:
   # Secondary categories (for nested paths)
   前端: front-end
   # Add more as needed:
-  # 书摘: reading
+  书影音: reading
   # 后端: back-end
   # 算法: algorithm
   # 项目: project
 
-# =============================================================================
-# Featured Categories (Homepage)
-# 首页精选分类 - 在首页以卡片形式展示的分类入口
-# =============================================================================
-# 字段说明：
-#   link: 分类链接路径，对应 categoryMap 中的英文 slug
-#   label: 卡片上显示的分类名称
-#   image: 封面图片路径（相对于 public 目录）
-#   description: 分类描述文字，显示在卡片上
-# -----------------------------------------------------------------------------
+  # =============================================================================
+  # Featured Categories (Homepage)
+  # 首页精选分类 - 在首页以卡片形式展示的分类入口
+  # =============================================================================
+  # 字段说明：
+  #   link: 分类链接路径，对应 categoryMap 中的英文 slug
+  #   label: 卡片上显示的分类名称
+  #   image: 封面图片路径（相对于 public 目录）
+  #   description: 分类描述文字，显示在卡片上
+  # -----------------------------------------------------------------------------
+  周刊: zhou-kan
 featuredCategories:
   - link: life # 对应 categoryMap 中 随笔: life
     label: 随笔
@@ -133,14 +134,14 @@ featuredSeries:
       # chrome: https://chromewebstore.google.com/detail/your-extension-id # (可选) 浏览器插件
       # docs: https://your-docs-url # (可选) 文档链接
   # 示例：添加第二个系列（取消注释启用）
-  # - slug: reading # URL 路径: /reading
-  #   categoryName: 书摘
-  #   label: 读书笔记
-  #   fullName: 我的读书笔记
-  #   description: 阅读记录与读后感
-  #   cover: /img/weekly_header.webp # 记得添加，我这里就是个示例
-  #   enabled: true
-  #   icon: ri:book-read-line
+  - slug: reading # URL 路径: /reading
+    categoryName: 书影音
+    label: 书影音
+    fullName: 我的书影音小计
+    description: 阅读记录与读后感
+    cover: /img/cover/2.webp # 随便找个图作为示例，可自行修改
+    enabled: true
+    icon: ri:book-read-line
 
 # =============================================================================
 # Social Links
@@ -342,11 +343,12 @@ navigation:
     nameKey: nav.home # i18n 翻译 key
     path: / # 链接路径
     icon: ri:home-heart-fill # 图标
-  # - name: 书摘
-  #   path: /reading
-  - name: 周刊
-    nameKey: nav.weekly
-    path: /weekly
+  - name: 书影音
+    path: /reading
+    icon: ri:book-read-line
+  - name: 月刊
+    nameKey: nav.monthly
+    path: /monthly
     icon: ri:newspaper-line
   - name: 文章 # 有子菜单时，path 可省略
     nameKey: nav.posts
