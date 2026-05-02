@@ -137,7 +137,7 @@ featuredSeries:
   - slug: reading # URL 路径: /reading
     categoryName: 书影音
     label: 书影音
-    fullName: 我的书影音小计
+    fullName: 我的书影音小记
     description: 阅读记录与读后感
     cover: /img/cover/2.webp # 随便找个图作为示例，可自行修改
     enabled: true
